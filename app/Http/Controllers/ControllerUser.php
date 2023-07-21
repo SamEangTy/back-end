@@ -15,7 +15,7 @@ class ControllerUser extends Controller
         } else if(!Hash::check($req->password,$user->password)){
             return ["message" =>"Password incorrect!"];
         } else{
-            return ['message'=>'Login Success',$user];
+            return ['user'=>$user,'message'=>'Login Success'];
         }
     }
     function register (Request $req){
