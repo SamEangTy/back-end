@@ -21,5 +21,6 @@ class ControllerHome extends Controller
             }else{
                 return response(['message'=>"home not found!"]);
             }
+        // return $home;
            }
 }

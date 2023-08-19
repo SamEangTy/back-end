@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ControllerCategery;
 use App\Http\Controllers\ControllerHome;
 use App\Http\Controllers\ControllerProduct;
 use App\Http\Controllers\ControllerUser;
@@ -28,6 +29,13 @@ Route::get("homepage",[ControllerHome::class,'homepage']);
 Route::post("update-home/{id}",[ControllerHome::class,'updateHome']);
 // product route
 Route::get("listProduct",[ControllerProduct::class,'listProduct']);
+Route::get("getOne/{id}",[ControllerProduct::class,'getOne']);
 Route::post("addProduct",[ControllerProduct::class,'addProduct']);
 Route::post("updateProduct/{id}",[ControllerProduct::class,'updateProduct']);
 Route::delete("deleteProduct/{id}",[ControllerProduct::class,'deleteProduct']);
+//categery
+Route::get("listCategery",[ControllerCategery::class,'listCategery']);
+Route::get("getOneCategery/{id}",[ControllerCategery::class,'getOne']);
+Route::post("addCategery",[ControllerCategery::class,'addCategery']);
+Route::post("updateCategery/{id}",[ControllerCategery::class,'updateCategery']);
+Route::delete("deleteCategery/{id}",[ControllerCategery::class,'deleteCategery']);

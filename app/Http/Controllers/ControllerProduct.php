@@ -16,22 +16,18 @@ class ControllerProduct extends Controller
    $product->name = $req->input('name');
    $product->categery_id = $req->input('categery_id');
 
-   $product->price_id = $req->input('price_id');
-//    $product->discount = $req->input('discount');
+   $product->price = $req->input('price');
+   $product->discount = $req->input('discount');
    $product->image = $req->file('image')->store('product/products');
    $product->save();
    return $product;
   }
   function listProduct ()
-    //   $discount = DB::table('products')
-    //   ->select(DB::raw('price * (discount/100) - price AS discountPrice'))
-    //   ->get();
     {
         $products = DB::select("
         SELECT price - price * (discount/100) AS discountPrice,
-        id, name, price, discount, image,
+        id, name, price, discount, image, categery_name,
         categeries.categery_name  FROM `products`
-        INNER JOIN prices on  products.price_id = prices.price_id 
         INNER JOIN categeries on products.categery_id = categeries.categery_id");
       // $products = DB::table('products')
             
@@ -42,14 +38,30 @@ class ControllerProduct extends Controller
       //   ->get(['id','categery_name','name','price','discount','image']);
         return  $products;
     }
+    function getOne($id){
+      $products = DB::select("
+      SELECT price - price * (discount/100) AS discountPrice,
+      id, name, price, discount, image, categery_name,
+      categeries.categery_name  FROM `products`
+      INNER JOIN categeries on products.categery_id = categeries.categery_id
+      where id = ?",[$id]);
+      return $products;
+    }
     function updateProduct (Request $req, $id)
     {
       $product = Product::find($id);
       if($product){
-        $product->update($req->all());
-        $product->image = $req->file('image')->store('product/products');
-        $product->save();
-        return ["message"=>'Product Update Success', $product];
+        if ($req->file('image') == null) {
+          $product->update($req->all());
+          $product->save();
+          $product= " ";
+        }else{
+          $product->update($req->all());
+          $product->image = $req->file('image')->store('product/products');
+          $product->save();
+        //  $product = $req->file('image')->store('product/products');  
+      }
+      return ["message"=>'Product Update Success', $product];
       }else{
         return ["message"=>'Product ID not found'];
       }
@@ -68,4 +80,5 @@ class ControllerProduct extends Controller
 
       }
     }
+   
 }
